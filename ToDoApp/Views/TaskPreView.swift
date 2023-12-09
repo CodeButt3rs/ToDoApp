@@ -37,7 +37,6 @@ struct TaskPreView: View {
                             .foregroundStyle(.white)
                     }
                     .frame(width: 250, alignment: .leading)
-//                    .border(.red)
                     VStack(alignment: .trailing){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(toDoStatus ? .green : .gray)
@@ -50,7 +49,6 @@ struct TaskPreView: View {
                             completeTask()
                         }
                     }
-//                    .border(.red)
                 }
             }
             .frame(maxWidth: 340, maxHeight: 90, alignment: .leading)

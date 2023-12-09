@@ -25,7 +25,6 @@ struct TaskMainWindow: View {
             }
             .opacity(tasks.isEmpty ? 0 : 1)
             .frame(width: 300, height: 50)
-//            .border(.red)
             List{
                 ForEach(tasks.isEmpty ? 
                         tasks :
