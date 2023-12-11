@@ -13,24 +13,34 @@ struct TaskMainWindow: View {
     @Environment(\.modelContext) private var ctx
     
     @State var isSheet: Bool = false
-    
     @State var filterCompletion: Bool = false
+    @State var selectedState: Int = 0
+    
+    let priorities: [Priority] = [
+        Priority(id: 0, name: "Все"),
+        Priority(id: 1, name: "Не выполненные"),
+        Priority(id: 2, name: "Выполненные")
+    ]
+    var filterState: Bool {get{selectedState == 1 ? false : true }}
     
     var body: some View {
         NavigationStack{
-            HStack(){
+            VStack(){
                 Text("Фильтр выполненных")
                     .frame(alignment: .trailing)
-                Toggle("", isOn: $filterCompletion)
+                Picker("Выбор фильтра состояния задач", selection: $selectedState){
+                    ForEach(priorities, id: \.id) { priority in
+                        /*@START_MENU_TOKEN@*/Text(priority.name)/*@END_MENU_TOKEN@*/
+                    }
+                }
+                .frame(width: 370)
+                .pickerStyle(.segmented)
             }
             .opacity(tasks.isEmpty ? 0 : 1)
             .frame(width: 300, height: 50)
             List{
-                ForEach(tasks.isEmpty ? 
-                        tasks :
-                        try! tasks.filter(#Predicate<Task> {t in
-                    t.completed == filterCompletion
-                })){ i in
+                ForEach(tasks.isEmpty ? tasks : selectedState != 0 ? try! tasks.filter(#Predicate<Task> {t in t.completed == filterState}) : tasks
+                ){ i in
                     ZStack{
                         NavigationLink(destination: TaskEditForm(task: i)){ EmptyView()}
                             .opacity(0)
